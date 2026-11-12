@@ -1,0 +1,62 @@
+[package]
+name = "ho-my-pod"
+version = "0.1.0"
+edition = "2021"
+description = "Stream Windows audio to HomePods over AirPlay 2"
+license = "MIT"
+repository = "https://github.com/jxgedouard/ho-my-pod"
+default-run = "ho-my-pod"
+
+[[bin]]
+name = "ho-my-pod"
+path = "src/main.rs"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Discovery
+mdns-sd = "0.13"
+
+# Audio capture (WASAPI loopback)
+wasapi = "0.19"
+
+# Windows volume + media session control (Spotify etc.)
+windows = { version = "0.61", features = [
+    "Foundation",
+    "Foundation_Collections",
+    "Media_Control",
+    "Storage_Streams",
+    "Win32_Foundation",
+    "Win32_Media_Audio",
+    "Win32_Media_Audio_Endpoints",
+    "Win32_System_Com",
+] }
+
+# AirPlay 2 protocol
+plist = "1.7"
+num-bigint = "0.4"
+sha2 = "0.10"
+hmac = "0.12"
+hkdf = "0.12"
+chacha20poly1305 = "0.10"
+rand = "0.8"
+uuid = { version = "1", features = ["v4"] }
+
+# Plumbing
+crossbeam-channel = "0.5"
+parking_lot = "0.12"
+log = "0.4"
+env_logger = "0.11"
+anyhow = "1"
+base64 = "0.22"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+strip = true
